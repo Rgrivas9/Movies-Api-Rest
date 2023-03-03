@@ -17,8 +17,20 @@ const createMovieLite = async (req, res, next) => {
     return next(error);
   }
 };
+const updateMovieLite = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updatedMovieLite = await MovieLite.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    return res.status(200).json(updatedMovieLite);
+  } catch (error) {
+    return next(error);
+  }
+};
 
 module.exports = {
   getAllMovieLites,
   createMovieLite,
+  updateMovieLite,
 };
