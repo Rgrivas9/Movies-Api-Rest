@@ -5,6 +5,7 @@ const getAllMovies = async (req, res, next) => {
     const movies = await Movie.find()
       .populate("directed_by")
       .populate("written_by")
+      .populate("produced_by")
       .populate("music_by")
       .populate("cast")
       .populate("awards");
@@ -19,6 +20,7 @@ const getMovieById = async (req, res, next) => {
     const movie = await Movie.findById(id)
       .populate("directed_by")
       .populate("written_by")
+      .populate("produced_by")
       .populate("music_by")
       .populate("cast")
       .populate("awards");
