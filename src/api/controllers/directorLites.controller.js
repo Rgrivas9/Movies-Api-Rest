@@ -10,7 +10,10 @@ const getAllDirectorLites = async (req, res, next) => {
 };
 const createDirectorLite = async (req, res, next) => {
   try {
-    const newDirectorLite = new DirectorLite(req.body);
+    const newDirectorLite = new DirectorLite({
+      ...req.body,
+      image: req.file ? req.file.path : "Not image found",
+    });
     const createdDirectorLite = await newDirectorLite.save();
     return res.status(201).json(createdDirectorLite);
   } catch (error) {

@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connect = require("./utils/connect");
+const { configCloudinary } = require("./middlewares/files.middleware");
 const DirectorsRoutes = require("./api/routes/directors.routes");
 const MoviesRoutes = require("./api/routes/movies.routes");
 const AwardsRoutes = require("./api/routes/awards.routes");
@@ -11,6 +12,7 @@ const MovieLitesRoutes = require("./api/routes/movieLites.routes");
 
 dotenv.config();
 const PORT = process.env.PORT;
+configCloudinary();
 const server = express();
 connect();
 

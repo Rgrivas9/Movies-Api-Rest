@@ -10,7 +10,10 @@ const getAllMovieLites = async (req, res, next) => {
 };
 const createMovieLite = async (req, res, next) => {
   try {
-    const newMovieLite = new MovieLite(req.body);
+    const newMovieLite = new MovieLite({
+      ...req.body,
+      poster: req.file ? req.file.path : "Not image found",
+    });
     const createdMovieLite = await newMovieLite.save();
     return res.status(201).json(createdMovieLite);
   } catch (error) {

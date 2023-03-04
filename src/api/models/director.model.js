@@ -14,6 +14,7 @@ const DirectorSchema = mongoose.Schema(
     },
     best_Director_Academy_Award: { type: Number, trim: true },
     filmography: [{ type: mongoose.Schema.Types.ObjectId, ref: "MovieLite" }],
+    image: { type: String, trim: true },
   },
   {
     timestamps: true,

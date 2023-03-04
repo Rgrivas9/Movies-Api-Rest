@@ -19,7 +19,10 @@ const getDirectorById = async (req, res, next) => {
 };
 const createDirector = async (req, res, next) => {
   try {
-    const newDirector = new Director(req.body);
+    const newDirector = new Director({
+      ...req.body,
+      image: req.file ? req.file.path : "Not image found",
+    });
     const createdDirector = await newDirector.save();
     return res.status(201).json(createdDirector);
   } catch (error) {

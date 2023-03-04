@@ -1,5 +1,5 @@
 const express = require("express");
-
+const { upload } = require("../../middlewares/files.middleware");
 const MoviesRoutes = express.Router();
 
 const {
@@ -10,6 +10,6 @@ const {
 
 MoviesRoutes.get("/", getAllMovies);
 MoviesRoutes.get("/:id", getMovieById);
-MoviesRoutes.post("/", createMovie);
+MoviesRoutes.post("/", upload.single("poster"), createMovie);
 
 module.exports = MoviesRoutes;

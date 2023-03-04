@@ -29,7 +29,10 @@ const getMovieById = async (req, res, next) => {
 };
 const createMovie = async (req, res, next) => {
   try {
-    const newMovie = new Movie(req.body);
+    const newMovie = new Movie({
+      ...req.body,
+      poster: req.file ? req.file.path : "Not image found",
+    });
     const createdMovie = await newMovie.save();
     return res.status(201).json(createdMovie);
   } catch (error) {

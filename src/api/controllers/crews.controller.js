@@ -10,7 +10,10 @@ const getAllCrews = async (req, res, next) => {
 };
 const createCrew = async (req, res, next) => {
   try {
-    const newCrew = new Crew(req.body);
+    const newCrew = new Crew({
+      ...req.body,
+      image: req.file ? req.file.path : "Not image found",
+    });
     const createdCrew = await newCrew.save();
     return res.status(201).json(createdCrew);
   } catch (error) {

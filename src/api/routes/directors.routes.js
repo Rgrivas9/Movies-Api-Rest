@@ -1,5 +1,5 @@
 const express = require("express");
-
+const { upload } = require("../../middlewares/files.middleware");
 const DirectorsRoutes = express.Router();
 
 const {
@@ -10,6 +10,6 @@ const {
 
 DirectorsRoutes.get("/", getAllDirectors);
 DirectorsRoutes.get("/:id", getDirectorById);
-DirectorsRoutes.post("/", createDirector);
+DirectorsRoutes.post("/", upload.single("image"), createDirector);
 
 module.exports = DirectorsRoutes;

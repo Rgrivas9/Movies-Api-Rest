@@ -1,5 +1,5 @@
 const express = require("express");
-
+const { upload } = require("../../middlewares/files.middleware");
 const DirectorLitesRoutes = express.Router();
 
 const {
@@ -9,7 +9,7 @@ const {
 } = require("../controllers/directorLites.controller");
 
 DirectorLitesRoutes.get("/", getAllDirectorLites);
-DirectorLitesRoutes.post("/", createDirectorLite);
+DirectorLitesRoutes.post("/", upload.single("image"), createDirectorLite);
 DirectorLitesRoutes.put("/:id", updateDirectorLite);
 
 module.exports = DirectorLitesRoutes;
