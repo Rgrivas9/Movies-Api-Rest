@@ -1,5 +1,5 @@
 const DirectorLite = require("../models/directorLite.model");
-
+const { deleteImgCloudinary } = require("../../middlewares/files.middleware");
 const getAllDirectorLites = async (req, res, next) => {
   try {
     const directorLites = await DirectorLite.find();
@@ -35,8 +35,20 @@ const updateDirectorLite = async (req, res, next) => {
     return next(error);
   }
 };
-
+const deleteDirectorLite = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const directorLite = await DirectorLite.findByIdAndDelete(id);
+    if (directorLite.image) {
+      deleteImgCloudinary(directorLite.image);
+    }
+    return res.status(200).json("Director borrado!");
+  } catch (error) {
+    return next(error);
+  }
+};
 module.exports = {
+  deleteDirectorLite,
   getAllDirectorLites,
   createDirectorLite,
   updateDirectorLite,

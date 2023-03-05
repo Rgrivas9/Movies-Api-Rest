@@ -1,5 +1,5 @@
 const MovieLite = require("../models/movieLite.model");
-
+const { deleteImgCloudinary } = require("../../middlewares/files.middleware");
 const getAllMovieLites = async (req, res, next) => {
   try {
     const movieLites = await MovieLite.find();
@@ -31,8 +31,21 @@ const updateMovieLite = async (req, res, next) => {
     return next(error);
   }
 };
+const deleteMovieLite = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const movieLite = await MovieLite.findByIdAndDelete(id);
+    if (movieLite.poster) {
+      deleteImgCloudinary(movieLite.poster);
+    }
+    return res.status(200).json("Película borrada");
+  } catch (error) {
+    return next(error);
+  }
+};
 
 module.exports = {
+  deleteMovieLite,
   getAllMovieLites,
   createMovieLite,
   updateMovieLite,
