@@ -72,7 +72,42 @@ const editImageDirector = async (req, res, next) => {
     return next(error);
   }
 };
+const edidFilmography = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { mode } = req.body;
+    const { movieId } = req.body;
+    if (mode == "push") {
+      const updatedDirector = await Director.findByIdAndUpdate(
+        id,
+        { $push: { filmography: movieId } },
+        { new: true }
+      );
+      return res.status(200).json(updatedDirector);
+    }
+    if (mode == "remove") {
+      const director = await Director.findById(id);
+      const newFilmography = [];
+      for (const movie of director.filmography) {
+        if (movie != movieId) {
+          newFilmography.push(movie);
+        }
+      }
+      const updatedDirector = await Director.findByIdAndUpdate(
+        id,
+        { filmography: newFilmography },
+        {
+          new: true,
+        }
+      );
+      return res.status(200).json(updatedDirector);
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
 module.exports = {
+  edidFilmography,
   editImageDirector,
   editDirector,
   deleteDirector,
