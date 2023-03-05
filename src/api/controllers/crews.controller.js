@@ -32,7 +32,40 @@ const deleteCrew = async (req, res, next) => {
     return next(error);
   }
 };
+const editCrew = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updatedCrew = await Crew.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    return res.status(200).json(updatedCrew);
+  } catch (error) {
+    return next(error);
+  }
+};
+const editImageCrew = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const crew = await Crew.findById(id);
+    if (crew.image) {
+      deleteImgCloudinary(crew.image);
+    }
+    const image = req.file ? req.file.path : "Not image found";
+    const updatedCrew = await Crew.findByIdAndUpdate(
+      id,
+      { image: image },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json(updatedCrew);
+  } catch (error) {
+    return next(error);
+  }
+};
 module.exports = {
+  editImageCrew,
+  editCrew,
   deleteCrew,
   getAllCrews,
   createCrew,

@@ -53,8 +53,40 @@ const deleteMovie = async (req, res, next) => {
     return next(error);
   }
 };
-
+const editMovie = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    return res.status(200).json(updatedMovie);
+  } catch (error) {
+    return next(error);
+  }
+};
+const editPoster = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const movie = await Movie.findById(id);
+    if (movie.poster) {
+      deleteImgCloudinary(movie.poster);
+    }
+    const poster = req.file ? req.file.path : "Not image found";
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      id,
+      { poster: poster },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json(updatedMovie);
+  } catch (error) {
+    return next(error);
+  }
+};
 module.exports = {
+  editPoster,
+  editMovie,
   deleteMovie,
   getAllMovies,
   getMovieById,

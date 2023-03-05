@@ -47,7 +47,28 @@ const deleteDirectorLite = async (req, res, next) => {
     return next(error);
   }
 };
+const editImageDirectorLite = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const directorLite = await DirectorLite.findById(id);
+    if (directorLite.image) {
+      deleteImgCloudinary(directorLite.image);
+    }
+    const image = req.file ? req.file.path : "Not image found";
+    const updatedDirectorLite = await DirectorLite.findByIdAndUpdate(
+      id,
+      { image: image },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json(updatedDirectorLite);
+  } catch (error) {
+    return next(error);
+  }
+};
 module.exports = {
+  editImageDirectorLite,
   deleteDirectorLite,
   getAllDirectorLites,
   createDirectorLite,

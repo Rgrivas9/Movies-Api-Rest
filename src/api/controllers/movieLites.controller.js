@@ -43,8 +43,28 @@ const deleteMovieLite = async (req, res, next) => {
     return next(error);
   }
 };
-
+const editPosterMovieLite = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const movieLite = await MovieLite.findById(id);
+    if (movieLite.poster) {
+      deleteImgCloudinary(movieLite.poster);
+    }
+    const poster = req.file ? req.file.path : "Not image found";
+    const updatedMovie = await MovieLite.findByIdAndUpdate(
+      id,
+      { poster: poster },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json(updatedMovie);
+  } catch (error) {
+    return next(error);
+  }
+};
 module.exports = {
+  editPosterMovieLite,
   deleteMovieLite,
   getAllMovieLites,
   createMovieLite,
